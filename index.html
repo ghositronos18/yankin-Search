@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Swift Search</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Favicon -->
+<title>Yakin Search – Doğu AI</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 
 <style>
-/* ---------- GOOGLE-CLONE UI ---------- */
+/* YAKIN-SEARCH UI */
 :root{
   --bg:#0b0e14;
   --card:#111827;
@@ -26,7 +21,7 @@ body{
   background:var(--bg);
   color:var(--text);
 }
-.user-image{
+.logo-image{
   position:absolute;
   top:12px;
   left:12px;
@@ -37,14 +32,14 @@ body{
   border:2px solid var(--accent);
   cursor:pointer;
 }
-/* Google-style top bar */
-.google-bar{
+/* Yakin-style top bar */
+.yakin-bar{
   display:flex;
   align-items:center;
   gap:12px;
   margin:12px 16px;
 }
-.google-logo{
+.yakin-logo{
   font-size:1.6rem;
   font-weight:500;
   color:var(--text);
@@ -81,7 +76,7 @@ body{
   cursor:pointer;
   font-size:1.1rem;
 }
-/* Google-style result cards */
+/* Yakin-style result cards */
 .result-card{
   background:var(--card);
   border:1px solid var(--border);
@@ -155,6 +150,69 @@ body{
 .page-btn:hover{
   border-color:var(--accent);
 }
+/* Doğu-AI chat bubbles */
+.dogu-ai-response{
+  border-left:4px solid var(--accent);
+  padding-left:12px;
+  margin:10px 0;
+}
+.dogu-ai-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.dogu-ai-icon{
+  width:24px;
+  height:24px;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.9rem;
+}
+.voice-status{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#111827;
+  padding:12px 16px;
+  border-radius:12px;
+  display:none;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  z-index:1000;
+}
+.dogu-ai-status{
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.voice-dot{
+  width:10px;
+  height:10px;
+  background:#ef4444;
+  border-radius:50%;
+  animation:pulse 1.5s infinite;
+}
+.dogu-ai-dot{
+  background:#8b5cf6;
+}
+.voice-text{
+  font-size:.9rem;
+}
+.loading-spinner{
+  border:3px solid #1f2937;
+  border-top:3px solid #2563eb;
+  border-radius:50%;
+  width:24px;
+  height:24px;
+  animation:spin 1s linear infinite;
+  margin:10px auto;
+}
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
 /* Music, file, etc. keep existing styles */
 .music-options{
   display:flex;
@@ -297,72 +355,9 @@ body{
   color:var(--muted);
   margin-top:4px;
 }
-/* Swift-AI chat bubbles */
-.swift-ai-response{
-  border-left:4px solid var(--accent);
-  padding-left:12px;
-  margin:10px 0;
-}
-.swift-ai-header{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:8px;
-}
-.swift-ai-icon{
-  width:24px;
-  height:24px;
-  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:.9rem;
-}
-.voice-status{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:#111827;
-  padding:12px 16px;
-  border-radius:12px;
-  display:none;
-  align-items:center;
-  gap:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,.3);
-  z-index:1000;
-}
-.swift-ai-status{
-  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-.voice-dot{
-  width:10px;
-  height:10px;
-  background:#ef4444;
-  border-radius:50%;
-  animation:pulse 1.5s infinite;
-}
-.swift-ai-dot{
-  background:#8b5cf6;
-}
-.voice-text{
-  font-size:.9rem;
-}
-.loading-spinner{
-  border:3px solid #1f2937;
-  border-top:3px solid #2563eb;
-  border-radius:50%;
-  width:24px;
-  height:24px;
-  animation:spin 1s linear infinite;
-  margin:10px auto;
-}
-@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
-
 /* Responsive tweaks */
 @media(max-width:768px){
-  .google-bar{flex-direction:column;align-items:stretch;}
+  .yakin-bar{flex-direction:column;align-items:stretch;}
   .search-bar{max-width:100%;}
   .tabs{overflow-x:auto;}
 }
@@ -370,24 +365,24 @@ body{
 </head>
 
 <body>
-<!-- USER IMAGE TOP-LEFT -->
-<img id="userImage" class="user-image" src="user-image.jpg" alt="User" title="User image">
+<!-- LOGO IMAGE TOP-LEFT -->
+<img id="logoImage" class="logo-image" src="🚀" alt="Yakin" title="Yakin Search">
 
-<!-- GOOGLE-STYLE TOP BAR -->
-<div class="google-bar">
-  <div class="google-logo">🚀 Swift Search</div>
+<!-- YAKIN-STYLE TOP BAR -->
+<div class="yakin-bar">
+  <div class="yakin-logo">🚀 Yakin Search</div>
   <div class="search-bar">
-    <input id="q" class="search-input" placeholder="Search or ask Swift AI...">
+    <input id="q" class="search-input" placeholder="Search or ask Doğu AI...">
     <div class="search-bar-icons">
       <button class="icon-btn text-search" title="Search">🔍</button>
-      <button class="icon-btn swift-ai" title="Swift AI">✨</button>
+      <button class="icon-btn dogu-ai" title="Doğu AI">✨</button>
       <button class="icon-btn voice-search" title="Voice Search">🎤</button>
       <button class="icon-btn file-search" title="File Services">📁</button>
     </div>
   </div>
 </div>
 
-<!-- GOOGLE-STYLE TABS -->
+<!-- YAKIN-STYLE TABS -->
 <div class="tabs">
   <div class="tab active" data-type="web">All</div>
   <div class="tab" data-type="images">Images</div>
@@ -396,14 +391,14 @@ body{
   <div class="tab" data-type="maps">Maps</div>
 </div>
 
-<!-- VOICE STATUS */
+<!-- VOICE STATUS -->
 <div class="voice-status" id="voiceStatus">
   <div class="voice-dot"></div>
   <div class="voice-text">Listening... Speak now</div>
 </div>
-<div class="voice-status swift-ai-status" id="swiftAiStatus" style="display:none">
-  <div class="voice-dot swift-ai-dot"></div>
-  <div class="voice-text">Swift AI is listening...</div>
+<div class="voice-status dogu-ai-status" id="doguAiStatus" style="display:none">
+  <div class="voice-dot dogu-ai-dot"></div>
+  <div class="voice-text">Doğu AI is listening...</div>
 </div>
 
 <!-- RESULTS AREA -->
@@ -469,135 +464,106 @@ body{
 </div>
 
 <script>
-/* ---------- CONFIG ---------- */
-const SWIFT_AI_KEY = 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE'; // <── drop key here
-let swiftAiMode = false;
+/* CONFIG */
+const SWIFT_AI_KEY = 'AIzaSyCBH60P8aGwfrtP-AEG8YKV7NeiNDfletQ'; 
+const SERPAPI_KEY  = '37287ea6afcdff52e5bdaf31322f9905a7cf3aa254221797e265b9be7d010b37';               
+
+let doguAiMode = false;
 let currentTab = 'web'; // web | images | videos | news | maps
 let currentPage = 1;
 let lastQuery = '';
 
-/* ---------- DOM ---------- */
+/* ---------- DOM ----- */
 const input = document.getElementById('q');
 const results = document.getElementById('results');
 const voiceBtn = document.querySelector('.voice-search');
-const swiftAiBtn = document.querySelector('.swift-ai');
+const doguAiBtn = document.querySelector('.dogu-ai');
 const fileBtn = document.querySelector('.file-search');
 const voiceStatus = document.getElementById('voiceStatus');
-const swiftAiStatus = document.getElementById('swiftAiStatus');
+const doguAiStatus = document.getElementById('doguAiStatus');
 const fileModal = document.getElementById('fileModal');
 const uploadArea = document.getElementById('uploadArea');
 const fileInput = document.getElementById('fileInput');
 const fileList = document.getElementById('fileList');
 const tabs = document.querySelectorAll('.tab');
 
-/* ---------- GOOGLE-CLONE SEARCH (WEB / IMG / VID / NEWS / MAPS) ---------- */
-async function googleCloneSearch(rawQuery, type = 'web', page = 1){
+/*  YAKIN-SEARCH via SerpAPI (Google JSON, no CORS) */
+async function yakinSearch(rawQuery, type = 'web', page = 1) {
   lastQuery = rawQuery;
   currentTab = type;
   currentPage = page;
   results.innerHTML = '<div class="loading-spinner"></div>';
-  // Use Bing-Azure cognitive demo endpoint (JSON) – no key needed for demo
-  const endpoint = 'https://api.cognitive.microsoft.com/bing/v7.0/search';
-  const headers = { 'Ocp-Apim-Subscription-Key': '00000000000000000000000000000000' }; // demo key
+
+  // Build SerpAPI URL (100 free searches / month)
   const params = new URLSearchParams({
+    engine: 'google',
     q: rawQuery,
-    count: 10,
-    offset: (page - 1) * 10,
-    mkt: 'en-US',
-    safeSearch: 'Moderate',
-    responseFilter: type === 'web' ? 'Webpages' : type === 'images' ? 'Images' : type === 'videos' ? 'Videos' : type === 'news' ? 'News' : 'Places'
+    location: 'United States',
+    hl: 'en',
+    gl: 'us',
+    safe: 'active',
+    num: 10,
+    start: (page - 1) * 10,
+    api_key: SERPAPI_KEY,
+    output: 'json'
   });
+
   try {
-    const res = await fetch(`${endpoint}?${params}`, { headers });
+    const res = await fetch(`https://serpapi.com/search.json?${params}`);
     const data = await res.json();
-    renderGoogleClone(data, type);
+
+    // Handle SerpAPI error
+    if (data.error) {
+      results.innerHTML = `<div class="result-card">SerpAPI: ${data.error}</div>`;
+      return;
+    }
+
+    const organic = data.organic_results || [];
+    let html = '';
+    organic.forEach(r => {
+      html += `
+        <div class="result-card">
+          <a class="result-title" href="${r.link}" target="_blank" rel="noreferrer">
+            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(r.link).hostname}">
+            ${r.title}
+          </a>
+          <div class="result-url">${r.displayed_link || r.link}</div>
+          <div class="result-snippet">${r.snippet || ''}</div>
+        </div>`;
+    });
+
+    if (!html) html = '<div class="result-card">No results found.</div>';
+
+    // pagination
+    html += `
+      <div class="pagination">
+        <button class="page-btn" onclick="yakinSearch('${rawQuery}','${type}',${page-1})" ${page===1?'disabled':''}>‹ Prev</button>
+        <span style="color:var(--muted);font-size:.9rem;">Page ${page}</span>
+        <button class="page-btn" onclick="yakinSearch('${rawQuery}','${type}',${page+1})">Next ›</button>
+      </div>`;
+
+    results.innerHTML = html;
   } catch (e) {
-    // fallback to duck inline
-    inlineWebSearch(rawQuery);
+    console.error(e);
+    inlineWebSearch(rawQuery); // fallback
   }
 }
 
-function renderGoogleClone(data, type){
-  let html = '';
-  if (type === 'web' && data.webPages) {
-    data.webPages.value.forEach(r => {
-      html += `
-        <div class="result-card">
-          <a class="result-title" href="${r.url}" target="_blank" rel="noreferrer">
-            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(r.url).hostname}">
-            ${r.name}
-          </a>
-          <div class="result-url">${r.displayUrl}</div>
-          <div class="result-snippet">${r.snippet}</div>
-        </div>`;
-    });
-  } else if (type === 'images' && data.images) {
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:0 16px;">';
-    data.images.value.forEach(r => {
-      html += `<a href="${r.contentUrl}" target="_blank" rel="noreferrer"><img src="${r.thumbnailUrl}" style="width:100%;border-radius:8px;"></a>`;
-    });
-    html += '</div>';
-  } else if (type === 'videos' && data.videos) {
-    data.videos.value.forEach(r => {
-      html += `
-        <div class="result-card">
-          <a class="result-title" href="${r.contentUrl}" target="_blank" rel="noreferrer">
-            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=youtube.com">
-            ${r.name}
-          </a>
-          <div class="result-snippet">${r.description}</div>
-        </div>`;
-    });
-  } else if (type === 'news' && data.news) {
-    data.news.value.forEach(r => {
-      html += `
-        <div class="result-card">
-          <a class="result-title" href="${r.url}" target="_blank" rel="noreferrer">
-            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(r.url).hostname}">
-            ${r.name}
-          </a>
-          <div class="result-snippet">${r.description}</div>
-        </div>`;
-    });
-  } else if (type === 'maps' && data.places) {
-    data.places.value.forEach(r => {
-      html += `
-        <div class="result-card">
-          <a class="result-title" href="${r.url}" target="_blank" rel="noreferrer">
-            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=maps.google.com">
-            ${r.name}
-          </a>
-          <div class="result-snippet">${r.address}</div>
-        </div>`;
-    });
-  } else {
-    html = '<div class="result-card">No results found.</div>';
-  }
-  // pagination
-  if (html) html += `
-    <div class="pagination">
-      <button class="page-btn" onclick="googleCloneSearch('${lastQuery}','${currentTab}',${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>
-      <span style="color:var(--muted);font-size:.9rem;">Page ${currentPage}</span>
-      <button class="page-btn" onclick="googleCloneSearch('${lastQuery}','${currentTab}',${currentPage+1})">Next ›</button>
-    </div>`;
-  results.innerHTML = html;
-}
-
-/* ---------- TAB SWITCH ---------- */
+/*  TAB SWITCH */
 tabs.forEach(t => t.addEventListener('click', () => {
   tabs.forEach(x => x.classList.remove('active'));
   t.classList.add('active');
-  if (lastQuery) googleCloneSearch(lastQuery, t.dataset.type, 1);
+  if (lastQuery) yakinSearch(lastQuery, t.dataset.type, 1);
 }));
 
-/* ---------- SWIFT AI (same as before) ---------- */
-async function swiftAIQuery(prompt){
-  if (!SWIFT_AI_KEY || SWIFT_AI_KEY === 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE') return 'Swift AI offline (no key).';
+/*  DOĞU AI (same as before) */
+async function doguAIQuery(prompt){
+  if (!SWIFT_AI_KEY || SWIFT_AI_KEY === 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE') return 'Doğu AI offline (no key).';
   try {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${SWIFT_AI_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: `You are Swift AI, a helpful voice assistant. Reply conversationally to: "${prompt}". Keep it short.` }] }] })
+      body: JSON.stringify({ contents: [{ parts: [{ text: `You are Doğu AI, a helpful voice assistant. Reply conversationally to: "${prompt}". Keep it short.` }] }] })
     });
     const data = await res.json();
     return data?.candidates?.[0]?.content?.parts?.[0]?.text || 'I’m here—what else can I do?';
@@ -606,7 +572,7 @@ async function swiftAIQuery(prompt){
   }
 }
 
-function speakSwiftAIResponse(text){
+function speakDoğuAIResponse(text){
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 1; u.pitch = 1; u.volume = 1;
@@ -614,16 +580,16 @@ function speakSwiftAIResponse(text){
   }
 }
 
-async function handleSwiftAIQuery(query){
+async function handleDoğuAIQuery(query){
   const q = query.toLowerCase().trim();
-  if (q.includes('hey swift') || q.includes('hello swift') || q.includes('okay swift')) {
-    const response = await swiftAIQuery(query.replace(/hey swift|hello swift|okay swift/gi, '').trim());
-    speakSwiftAIResponse(response);
+  if (q.includes('hey doğai') || q.includes('hello doğai') || q.includes('okay doğai')) {
+    const response = await doguAIQuery(q.replace(/hey doğai|hello doğai|okay doğai/gi, '').trim());
+    speakDoğuAIResponse(response);
     return `
       <div class="result-card">
-        <div class="swift-ai-header">
-          <div class="swift-ai-icon">✨</div>
-          <b>Swift AI</b>
+        <div class="dogu-ai-header">
+          <div class="dogu-ai-icon">✨</div>
+          <b>Doğu AI</b>
         </div>
         <div class="result-snippet">${response}</div>
         <div class="note" style="color:var(--muted);font-size:.8rem;">Speaking response…</div>
@@ -637,12 +603,12 @@ async function handleSwiftAIQuery(query){
       "What do you call a fake noodle? An impasta!"
     ];
     const joke = jokes[Math.floor(Math.random() * jokes.length)];
-    speakSwiftAIResponse(joke);
+    speakDoğuAIResponse(joke);
     return `
       <div class="result-card">
-        <div class="swift-ai-header">
-          <div class="swift-ai-icon">✨</div>
-          <b>Swift AI</b>
+        <div class="dogu-ai-header">
+          <div class="dogu-ai-icon">✨</div>
+          <b>Doğu AI</b>
         </div>
         <div class="result-snippet">${joke}</div>
       </div>`;
@@ -651,68 +617,30 @@ async function handleSwiftAIQuery(query){
     try {
       const expr = q.replace(/calculate|what is|how much is/gi, '').trim();
       const ans = eval(expr.replace(/[^-()\d/*+.]/g, ''));
-      speakSwiftAIResponse(`The result is ${ans}`);
+      speakDoğuAIResponse(`The result is ${ans}`);
       return `
         <div class="result-card">
-          <div class="swift-ai-header">
-            <div class="swift-ai-icon">✨</div>
-            <b>Swift AI</b>
+          <div class="dogu-ai-header">
+            <div class="dogu-ai-icon">✨</div>
+            <b>Doğu AI</b>
           </div>
           <div class="result-snippet">🧮 ${expr} = ${ans}</div>
         </div>`;
     } catch (e) {}
   }
-  const response = await swiftAIQuery(query);
-  speakSwiftAIResponse(response);
+  const response = await doguAIQuery(query);
+  speakDoğuAIResponse(response);
   return `
     <div class="result-card">
-      <div class="swift-ai-header">
-        <div class="swift-ai-icon">✨</div>
-        <b>Swift AI</b>
+      <div class="dogu-ai-header">
+        <div class="dogu-ai-icon">✨</div>
+        <b>Doğu AI</b>
       </div>
       <div class="result-snippet">${response}</div>
     </div>`;
 }
 
-/* ---------- INLINE FALLBACK (Duck) ---------- */
-async function inlineWebSearch(rawQuery){
-  results.innerHTML = '<div class="loading-spinner"></div>';
-  try {
-    const res = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(rawQuery)}&format=json&no_html=1&skip_disambig=1`);
-    const data = await res.json();
-    let html = '';
-    if (data.AbstractText) {
-      html += `
-        <div class="result-card">
-          <a class="result-title" href="${data.AbstractURL}" target="_blank" rel="noreferrer">
-            <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(data.AbstractURL).hostname}">
-            ${data.Heading || rawQuery}
-          </a>
-          <div class="result-snippet">${data.AbstractText}</div>
-        </div>`;
-    }
-    if (data.RelatedTopics && data.RelatedTopics.length) {
-      data.RelatedTopics.slice(0, 8).forEach(r => {
-        if (r.Text) {
-          html += `
-            <div class="result-card">
-              <a class="result-title" href="${r.FirstURL}" target="_blank" rel="noreferrer">
-                <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(r.FirstURL).hostname}">
-                ${r.Text.split(' - ')[0]}
-              </a>
-              <div class="result-snippet">${r.Text.split(' - ').slice(1).join(' - ')}</div>
-            </div>`;
-        }
-      });
-    }
-    if (!html) html = '<div class="result-card">No results found.</div>';
-    results.innerHTML = html;
-  } catch (e) {
-    results.innerHTML = '<div class="result-card">Could not retrieve results.</div>';
-  }
-}
-
-/* ---------- VOICE SEARCH ---------- */
+/* VOICE SEARCH */
 let isListening = false;
 let recognition = null;
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -723,7 +651,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   recognition.lang = 'en-US';
   recognition.onstart = () => {
     isListening = true;
-    voiceBtn.classList.add('listening');
+    document.querySelector('.voice-search').classList.add('listening');
     voiceStatus.style.display = 'flex';
   };
   recognition.onresult = (e) => {
@@ -736,17 +664,17 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   };
   recognition.onend = () => {
     isListening = false;
-    voiceBtn.classList.remove('listening');
+    document.querySelector('.voice-search').classList.remove('listening');
     voiceStatus.style.display = 'none';
   };
-  voiceBtn.addEventListener('click', () => {
+  document.querySelector('.voice-search').addEventListener('click', () => {
     if (isListening) recognition.stop(); else recognition.start();
   });
 } else {
-  voiceBtn.style.display = 'none';
+  document.querySelector('.voice-search').style.display = 'none';
 }
 
-/* ---------- FILE SERVICES (same as old file) ---------- */
+/* FILE SERVICES (same as old file)*/
 function openFileModal(){
   fileModal.style.display = 'flex';
   renderFileList();
@@ -758,10 +686,10 @@ function searchOnService(service){
   const query = input.value.trim();
   if (query) {
     switch(service){
-      case 'googleDrive': inlineWebSearch('site:drive.google.com ' + query); break;
-      case 'dropbox': inlineWebSearch('site:dropbox.com ' + query); break;
-      case 'onedrive': inlineWebSearch('site:onedrive.live.com ' + query); break;
-      case 'icloud': inlineWebSearch('site:icloud.com ' + query); break;
+      case 'googleDrive': yakinSearch('site:drive.google.com ' + query, 'web', 1); break;
+      case 'dropbox': yakinSearch('site:dropbox.com ' + query, 'web', 1); break;
+      case 'onedrive': yakinSearch('site:onedrive.live.com ' + query, 'web', 1); break;
+      case 'icloud': yakinSearch('site:icloud.com ' + query, 'web', 1); break;
     }
   } else {
     openService(service);
@@ -818,12 +746,12 @@ function renderFileList(){
   fileList.innerHTML = uploadedFiles.length > 0 ?
     uploadedFiles.slice(0, 5).map(file => `
       <div class="file-item">
-        <div class="file-name">📄 ${file.name}</div>
-        <div class="file-size">${formatFileSize(file.size)}</div>
-        <div class="file-actions">
+        <span class="file-name">📄 ${file.name}</span>
+        <span class="file-size">${formatFileSize(file.size)}</span>
+        <span class="file-actions">
           <button class="file-action-btn" onclick="openFile('${file.name}')" title="Open">🔍</button>
           <button class="file-action-btn" onclick="removeFile('${file.name}')" title="Remove">🗑️</button>
-        </div>
+        </span>
       </div>`).join('') :
     '<p class="note" style="text-align:center">No files uploaded yet</p>';
 }
@@ -844,7 +772,7 @@ function formatFileSize(bytes){
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-/* ---------- MUSIC (same as old file) ---------- */
+/*  MUSIC (same as old file) */
 function parseMusicQuery(query){
   const patterns = [
     /play\s+"(.+?)"\s+by\s+(.+)/i,
@@ -889,15 +817,15 @@ function embedPlayer(src, msg) {
   box.innerHTML = `<iframe src="${src}" width="100%" height="300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 }
 
-/* ---------- MAIN HANDLER ---------- */
+/*  MAIN HANDLER */
 async function handle(query){
   const q = query.trim();
   if (!q) return;
   addToHistory(q);
-  // Swift-AI wake words
-  if (swiftAiMode || q.toLowerCase().includes('hey swift') || q.toLowerCase().includes('okay swift')) {
+  // Doğu-AI wake words
+  if (doguAiMode || q.toLowerCase().includes('hey doğai') || q.toLowerCase().includes('okay doğai')) {
     results.innerHTML = '<div class="loading-spinner"></div>';
-    const html = await handleSwiftAIQuery(q);
+    const html = await handleDoğuAIQuery(q);
     results.innerHTML = html;
     return;
   }
@@ -924,11 +852,11 @@ async function handle(query){
   const lower = q.toLowerCase();
   if (lower.startsWith('find ') || lower.startsWith('search ') || lower.includes('file') || lower.includes('document')) {
     if (lower.includes('drive') || lower.includes('google')) {
-      googleCloneSearch('site:drive.google.com ' + q, 'web', 1);
+      yakinSearch('site:drive.google.com ' + q, 'web', 1);
       return;
     }
     if (lower.includes('dropbox')) {
-      googleCloneSearch('site:dropbox.com ' + q, 'web', 1);
+      yakinSearch('site:dropbox.com ' + q, 'web', 1);
       return;
     }
     openFileModal();
@@ -956,11 +884,11 @@ async function handle(query){
     results.innerHTML = `<div class="result-card">Opening Spotify for: ${q}</div>`;
     return;
   }
-  // Default: google clone search on active tab
-  googleCloneSearch(q, currentTab, 1);
+  // Default: yakin search on active tab
+  yakinSearch(q, currentTab, 1);
 }
 
-/* ---------- HISTORY ---------- */
+/*  HISTORY */
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
 function addToHistory(q){
@@ -997,7 +925,7 @@ function showHistory(){
   return html;
 }
 
-/* ---------- KEYBOARD SHORTCUTS ---------- */
+/* KEYBOARD SHORTCUTS */
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter') handle(input.value);
   if (e.key === '/') {
@@ -1021,25 +949,25 @@ input.addEventListener('keydown', e => {
   }
   if ((e.ctrlKey || e.metaKey) && e.key === ' ') {
     e.preventDefault();
-    // toggle Swift-AI mode
-    swiftAiMode = !swiftAiMode;
-    swiftAiBtn.classList.toggle('active', swiftAiMode);
-    input.placeholder = swiftAiMode ? 'Ask Swift AI anything…' : 'Search or ask Swift AI…';
+    // toggle Doğu-AI mode
+    doguAiMode = !doguAiMode;
+    document.querySelector('.dogu-ai').classList.toggle('active', doguAiMode);
+    input.placeholder = doguAiMode ? 'Ask Doğu AI anything…' : 'Search or ask Doğu AI…';
   }
 });
 
-/* ---------- INITIALIZE ---------- */
+/*  INITIALIZE */
 results.innerHTML = showHistory();
 input.focus();
 if (searchHistory.length === 0 && uploadedFiles.length === 0) {
   setTimeout(() => {
     results.innerHTML = `
       <div class="result-card">
-        <div class="swift-ai-header">
-          <div class="swift-ai-icon">✨</div>
-          <b>Welcome to Swift Search – Google Clone Edition</b>
+        <div class="dogu-ai-header">
+          <div class="dogu-ai-icon">✨</div>
+          <b>Welcome to Yakin Search – Doğu AI Edition</b>
         </div>
-        <p>Try searching the web, images, videos, news, or maps. Say “Hey Swift” for AI, “play …” for music, or “open gmail” to launch sites.</p>
+        <p>Try searching the web, images, videos, news, or maps. Say “Hey Doğu AI” for AI, “play …” for music, or “open gmail” to launch sites.</p>
       </div>`;
   }, 500);
 }
