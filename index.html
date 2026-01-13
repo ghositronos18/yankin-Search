@@ -469,11 +469,11 @@ const SWIFT_AI_KEY = 'AIzaSyCBH60P8aGwfrtP-AEG8YKV7NeiNDfletQ';
 const SERPAPI_KEY  = '37287ea6afcdff52e5bdaf31322f9905a7cf3aa254221797e265b9be7d010b37';               
 
 let doguAiMode = false;
-let currentTab = 'web'; // web | images | videos | news | maps
+let currentTab = 'web';
 let currentPage = 1;
 let lastQuery = '';
 
-/* ---------- DOM ----- */
+/* DOM  */
 const input = document.getElementById('q');
 const results = document.getElementById('results');
 const voiceBtn = document.querySelector('.voice-search');
@@ -534,7 +534,7 @@ async function yakinSearch(rawQuery, type = 'web', page = 1) {
 
     if (!html) html = '<div class="result-card">No results found.</div>';
 
-    // pagination
+
     html += `
       <div class="pagination">
         <button class="page-btn" onclick="yakinSearch('${rawQuery}','${type}',${page-1})" ${page===1?'disabled':''}>‹ Prev</button>
@@ -545,7 +545,7 @@ async function yakinSearch(rawQuery, type = 'web', page = 1) {
     results.innerHTML = html;
   } catch (e) {
     console.error(e);
-    inlineWebSearch(rawQuery); // fallback
+    inlineWebSearch(rawQuery); 
   }
 }
 
@@ -884,7 +884,7 @@ async function handle(query){
     results.innerHTML = `<div class="result-card">Opening Spotify for: ${q}</div>`;
     return;
   }
-  // Default: yakin search on active tab
+
   yakinSearch(q, currentTab, 1);
 }
 
@@ -974,3 +974,4 @@ if (searchHistory.length === 0 && uploadedFiles.length === 0) {
 </script>
 </body>
 </html>
+
