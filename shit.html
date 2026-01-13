@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Swift Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Favicon - Tab Logo -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22   viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22   viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22   viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+<!-- Alternative: Using emoji as favicon with multiple sizes -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22   viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%238b5cf6%22>✨</text></svg>">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGTSURBVHgB7Zc9TsNAEIXnDbyCE9AdgOKk7OAMlBwgtOQAdKQi4gh0lBk6LkAT2gwpkDIiQkISZz2zs4nWmvYr+yPv+0nW7mq/n9kPy4AURVEURVEURTlJwHmnUqkUARQBFAEUARQBFAEUARQBFAEUARQBFAH8EEDYh8HX1xfoQajX67CJP0nSP1UqFQL7YO7JZALnAPNsEARwCt4efjabHQXT6TQ6nU5n3Wq14K8YjUazer1+FFSr1Q04jNFoRLIsK1Wr1fW+Fn5CwK+5NAF9RqNROf2t1wvncC54LMuyvW3jvQAKpD+1HLIe5n0JcM7W5XLZcl33LQzD2elK92gAAU7e4Z7P52ev1/uyLCvJsuzMdd0H0zT7XJ/L5bJgmuYb72G73fKtdjtVFovFFR+GOB9oAGQYxkOpVLrvdrtvruu+8l6SJOPpdPp4Qjs2z7VQKFBx5J+1IAg2cRzTcrk00oKbGP8vtNvtOyprt9t39Mc0Go07fjtRFH04jvOy5+8J7AS8eC4IAjIqAL2/UqnE74Acx2Fpx0rjAVw6BHZ2kpcO24AgiCHl6G3oT4D30jCElIfhLZflIYDhZrOJ3i6nRGAQv9zrA/kA8NtJA/x57k8Ac6xh8IcoiqIoRw86fltP5D3/gQAAAABJRU5ErkJggg==">
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont;
+  background:#0b0e14;
+  color:#e8eaed;
+}
+.user-image{
+  position:absolute;
+  top:12px;
+  left:12px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #8b5cf6;
+  cursor:pointer;
+}
+.container{
+  max-width:760px;
+  margin:14vh auto;
+  text-align:center;
+}
+.logo{
+  font-size:2.6rem;
+  font-weight:600;
+  margin-bottom:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.logo .ai-badge{
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:0.8rem;
+  font-weight:500;
+}
+.search-wrapper{
+  position:relative;
+  display:flex;
+  gap:10px;
+}
+.search-box{
+  flex:1;
+  position:relative;
+}
+input{
+  width:100%;
+  padding:14px 80px 14px 18px;
+  font-size:1rem;
+  border-radius:24px;
+  border:none;
+  outline:none;
+  background:#1f2937;
+  color:white;
+  box-sizing:border-box;
+}
+.search-controls{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  gap:8px;
+}
+.search-btn{
+  background:none;
+  border:none;
+  color:#9ca3af;
+  cursor:pointer;
+  font-size:1.2rem;
+  padding:4px;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+}
+.search-btn:hover{
+  background:#374151;
+}
+.search-btn.text-search:hover{
+  color:#2563eb;
+}
+.search-btn.voice-search:hover{
+  color:#3b82f6;
+}
+.search-btn.voice-search.listening{
+  color:#ef4444;
+  background:#1f2937;
+  animation:pulse 1.5s infinite;
+}
+.search-btn.swift-ai:hover{
+  color:#8b5cf6;
+  background:linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+}
+.search-btn.swift-ai.active{
+  color:#8b5cf6;
+  background:linear-gradient(135deg, #667eea40 0%, #764ba240 100%);
+  animation:glow 2s infinite;
+}
+.search-btn.file-search:hover{
+  color:#10b981;
+}
+.search-actions{
+  display:flex;
+  gap:8px;
+}
+.action-btn{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:none;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  font-size:1.1rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.action-btn:hover{
+  background:#1d4ed8;
+}
+button.clear-key{
+  width:auto;
+  padding:10px 16px;
+  border-radius:24px;
+  background:#dc2626;
+  font-size:0.9rem;
+  margin-top:10px;
+  border:none;
+  color:white;
+  cursor:pointer;
+}
+button.clear-key:hover{
+  background:#b91c1c;
+}
+.results{
+  margin-top:22px;
+  text-align:left;
+}
+.card{
+  background:#111827;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
+.note{
+  font-size:.8rem;
+  color:#9ca3af;
+}
+.keybox{
+  background:#111827;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
+.keybox input{
+  width:100%;
+  margin-top:10px;
+  padding:12px 16px;
+}
+.history-item{
+  padding:8px 12px;
+  margin:4px 0;
+  background:#1f2937;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background 0.2s;
+}
+.history-item:hover{
+  background:#374151;
+}
+.loading-spinner{
+  border:3px solid #1f2937;
+  border-top:3px solid #2563eb;
+  border-radius:50%;
+  width:24px;
+  height:24px;
+  animation:spin 1s linear infinite;
+  margin:10px auto;
+}
+.swift-ai-response{
+  border-left:4px solid #8b5cf6;
+  padding-left:12px;
+  margin:10px 0;
+}
+.swift-ai-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.swift-ai-icon{
+  width:24px;
+  height:24px;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.9rem;
+}
+@keyframes spin{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+@keyframes pulse{
+  0%,100%{opacity:1;}
+  50%{opacity:0.6;}
+}
+@keyframes glow{
+  0%,100%{box-shadow:0 0 5px #8b5cf6;}
+  50%{box-shadow:0 0 15px #8b5cf6;}
+}
+.music-options{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.music-btn{
+  padding:8px 16px;
+  background:#374151;
+  border-radius:20px;
+  font-size:0.9rem;
+  cursor:pointer;
+  transition:background 0.2s;
+  border:none;
+  color:white;
+}
+.music-btn:hover{
+  background:#4b5563;
+}
+.voice-status{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#111827;
+  padding:12px 16px;
+  border-radius:12px;
+  display:none;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  z-index:1000;
+}
+.swift-ai-status{
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.voice-dot{
+  width:10px;
+  height:10px;
+  background:#ef4444;
+  border-radius:50%;
+  animation:pulse 1s infinite;
+}
+.swift-ai-dot{
+  background:#8b5cf6;
+}
+.voice-text{
+  font-size:0.9rem;
+}
+.file-services{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax,140px, 1fr);
+  gap:10px;
+  margin-top:10px;
+}
+.file-service{
+  background:#1f2937;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+  cursor:pointer;
+  transition:background 0.2s, transform 0.2s;
+}
+.file-service:hover{
+  background:#374151;
+  transform:translateY(-2px);
+}
+.file-service i{
+  font-size:1.5rem;
+  margin-bottom:8px;
+  display:block;
+}
+.file-service-name{
+  font-size:0.9rem;
+  font-weight:500;
+}
+.file-service-desc{
+  font-size:0.75rem;
+  color:#9ca3af;
+  margin-top:4px;
+}
+.file-upload-area{
+  border:2px dashed #374151;
+  border-radius:12px;
+  padding:30px 20px;
+  text-align:center;
+  margin-top:15px;
+  cursor:pointer;
+  transition:border-color 0.2s;
+}
+.file-upload-area:hover{
+  border-color:#3b82f6;
+}
+.file-upload-area.dragover{
+  border-color:#10b981;
+  background:#064e3b20;
+}
+.upload-icon{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+#fileList{
+  margin-top:15px;
+  max-height:200px;
+  overflow-y:auto;
+}
+.file-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  background:#1f2937;
+  border-radius:8px;
+  margin-bottom:6px;
+}
+.file-name{
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.file-size{
+  font-size:0.8rem;
+  color:#9ca3af;
+  margin-left:10px;
+}
+.file-actions{
+  display:flex;
+  gap:6px;
+}
+.file-action-btn{
+  background:none;
+  border:none;
+  color:#9ca3af;
+  cursor:pointer;
+  font-size:0.9rem;
+  padding:2px 6px;
+}
+.file-action-btn:hover{
+  color:#3b82f6;
+}
+.service-modal{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+}
+.modal-content{
+  background:#111827;
+  border-radius:16px;
+  padding:20px;
+  max-width:500px;
+  width:90%;
+  max-height:80vh;
+  overflow-y:auto;
+}
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+.modal-close{
+  background:none;
+  border:none;
+  color:#9ca3af;
+  font-size:1.5rem;
+  cursor:pointer;
+  padding:0;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.swift-ai-controls{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.swift-ai-btn{
+  padding:8px 16px;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius:20px;
+  border:none;
+  color:white;
+  cursor:pointer;
+  font-size:0.9rem;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.swift-ai-btn:hover{
+  opacity:0.9;
+}
+.swift-ai-btn.secondary{
+  background:#374151;
+}
+.command-examples{
+  background:#1f2937;
+  border-radius:12px;
+  padding:15px;
+  margin-top:15px;
+}
+.command-examples h4{
+  margin-top:0;
+  margin-bottom:10px;
+}
+.command-item{
+  padding:6px 0;
+  border-bottom:1px solid #374151;
+}
+.command-item:last-child{
+  border-bottom:none;
+}
+.command-cmd{
+  color:#8b5cf6;
+  font-weight:500;
+}
+.command-desc{
+  color:#9ca3af;
+  font-size:0.85rem;
+  margin-left:8px;
+}
+@media(max-width:768px){
+  .container{
+    margin:8vh 16px;
+  }
+  .logo{
+    font-size:2rem;
+  }
+  .search-wrapper{
+    flex-direction:column;
+  }
+  .search-actions{
+    width:100%;
+    justify-content:center;
+  }
+  .action-btn{
+    width:100%;
+    border-radius:24px;
+    height:46px;
+  }
+  .voice-status{
+    top:10px;
+    right:10px;
+    left:10px;
+  }
+  input{
+    padding-right:70px;
+  }
+  .file-services{
+    grid-template-columns:repeat(2, 1fr);
+  }
+  .swift-ai-controls{
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- USER IMAGE TOP-LEFT -->
+<img id="userImage" class="user-image" src="user-image.jpg" alt="User" title="User image">
+
+<div class="container">
+  <div class="logo">
+    <span>🚀</span> Swift Search
+    <span class="ai-badge">Swift AI</span>
+  </div>
+
+  <div class="search-wrapper">
+    <div class="search-box">
+      <input id="q" placeholder="Ask Swift AI, search, play music, or manage files...">
+      <div class="search-controls">
+        <button class="search-btn text-search" title="Text Search">🔍</button>
+        <button class="search-btn swift-ai" title="Swift AI Assistant">✨</button>
+        <button class="search-btn voice-search" title="Voice Search">🎤</button>
+        <button class="search-btn file-search" title="File Services">📁</button>
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="action-btn" id="mainSearchBtn" title="Search">↵</button>
+    </div>
+  </div>
+
+  <div id="clearKeyBtn"></div>
+
+  <div class="voice-status" id="voiceStatus">
+    <div class="voice-dot"></div>
+    <div class="voice-text">Listening... Speak now</div>
+  </div>
+
+  <div class="voice-status swift-ai-status" id="swiftAiStatus" style="display:none">
+    <div class="voice-dot swift-ai-dot"></div>
+    <div class="voice-text">Swift AI is listening...</div>
+  </div>
+
+  <div class="results" id="results"></div>
+</div>
+
+<!-- File Services Modal -->
+<div class="service-modal" id="fileModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 style="margin:0">File Services</h3>
+      <button class="modal-close" onclick="closeFileModal()">×</button>
+    </div>
+    
+    <div class="file-upload-area" id="uploadArea">
+      <div class="upload-icon">📁</div>
+      <p>Drag & drop files here or click to browse</p>
+      <input type="file" id="fileInput" multiple style="display:none">
+      <p class="note">Supports images, documents, audio, and video files</p>
+    </div>
+    
+    <div id="fileList"></div>
+    
+    <div class="file-services">
+      <div class="file-service" onclick="searchOnService('googleDrive')">
+        <i>📁</i>
+        <div class="file-service-name">Google Drive</div>
+        <div class="file-service-desc">Cloud storage</div>
+      </div>
+      <div class="file-service" onclick="searchOnService('dropbox')">
+        <i>📦</i>
+        <div class="file-service-name">Dropbox</div>
+        <div class="file-service-desc">File sharing</div>
+      </div>
+      <div class="file-service" onclick="searchOnService('onedrive')">
+        <i>☁️</i>
+        <div class="file-service-name">OneDrive</div>
+        <div class="file-service-desc">Microsoft cloud</div>
+      </div>
+      <div class="file-service" onclick="searchOnService('icloud')">
+        <i>🍎</i>
+        <div class="file-service-name">iCloud</div>
+        <div class="file-service-desc">Apple cloud</div>
+      </div>
+      <div class="file-service" onclick="openService('wetransfer')">
+        <i>📤</i>
+        <div class="file-service-name">WeTransfer</div>
+        <div class="file-service-desc">File transfer</div>
+      </div>
+      <div class="file-service" onclick="openService('figma')">
+        <i>🎨</i>
+        <div class="file-service-name">Figma</div>
+        <div class="file-service-desc">Design files</div>
+      </div>
+      <div class="file-service" onclick="openService('github')">
+        <i>💻</i>
+        <div class="file-service-name">GitHub</div>
+        <div class="file-service-desc">Code files</div>
+      </div>
+      <div class="file-service" onclick="openService('notion')">
+        <i>📝</i>
+        <div class="file-service-name">Notion</div>
+        <div class="file-service-desc">Documents</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const input = document.getElementById("q");
+const results = document.getElementById("results");
+const clearKeyBtn = document.getElementById("clearKeyBtn");
+const swiftAiBtn = document.querySelector('.swift-ai');
+const voiceBtn = document.querySelector('.voice-search');
+const textSearchBtn = document.querySelector('.text-search');
+const fileSearchBtn = document.querySelector('.file-search');
+const mainSearchBtn = document.getElementById("mainSearchBtn");
+const voiceStatus = document.getElementById("voiceStatus");
+const swiftAiStatus = document.getElementById("swiftAiStatus");
+const fileModal = document.getElementById("fileModal");
+const uploadArea = document.getElementById("uploadArea");
+const fileInput = document.getElementById("fileInput");
+const fileList = document.getElementById("fileList");
+
+/* ---------- SWIFT AI CONFIGURATION ---------- */
+/* Hard-coded Gemini 2.5 Flash-free key – user can’t change it           */
+const SWIFT_AI_KEY = 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE';   // <-- drop yours inside quotes
+let swiftAiMode = false;
+/* --------------------------------------------------------------------- */
+
+/* ---------- SwIFT AI ASSISTANT ---------- */
+async function swiftAIQuery(prompt) {
+  if (!SWIFT_AI_KEY || SWIFT_AI_KEY === 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE') {
+    return `Swift AI is offline (no API key configured).`;
+  }
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${SWIFT_AI_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are Swift AI, a helpful voice assistant. Reply conversationally to: "${prompt}". Keep it short.`
+            }]
+          }]
+        })
+      }
+    );
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    return data?.candidates?.[0]?.content?.parts?.[0]?.text || 'I’m here—what else can I do?';
+  } catch (err) {
+    console.error('Swift AI fetch error:', err);
+    return 'Connection trouble—check the key or network.';
+  }
+}
+
+/* ---------- KEY UI REMOVAL ---------- */
+/* Nothing to show, save, or clear – key is baked in above */
+function showKeyInput() { /* no-op */ }
+function saveKey() { /* no-op */ }
+function clearApiKey() { /* no-op */ }
+function updateClearKeyButton() { clearKeyBtn.innerHTML = ''; }
+
+/*SwIFT AI ASSISTANT */
+async function handleSwiftAIQuery(query){
+  const q = query.toLowerCase().trim();
+  
+  // Handle voice wake word
+  if(q.includes("hey swift") || q.includes("hello swift") || q.includes("okay swift")){
+    const response = await swiftAIQuery(query.replace(/hey swift|hello swift|okay swift/gi, "").trim());
+    speakSwiftAIResponse(response);
+    return `
+      <div class="card">
+        <div class="swift-ai-response">
+          <div class="swift-ai-header">
+            <div class="swift-ai-icon">✨</div>
+            <b>Swift AI</b>
+          </div>
+          <p>${response}</p>
+          <div class="note">Speaking response...</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Handle common assistant commands
+  if(q.includes("weather") || q.includes("temperature")){
+    return inlineWebSearch("weather");
+  }
+  
+  if(q.includes("timer") || q.includes("alarm")){
+    const match = q.match(/(\d+)\s*(minute|second|hour|min|sec|hr)/i);
+    if(match){
+      const time = parseInt(match[1]);
+      const unit = match[2].toLowerCase();
+      speakSwiftAIResponse(`Timer set for ${time} ${unit}s starting now.`);
+      return `
+        <div class="card">
+          <div class="swift-ai-response">
+            <div class="swift-ai-header">
+              <div class="swift-ai-icon">✨</div>
+              <b>Swift AI</b>
+            </div>
+            <p>⏰ Timer set for ${time} ${unit}s</p>
+            <div class="note">Timer will notify you when time is up</div>
+          </div>
+        </div>
+      `;
+    }
+  }
+  
+  if(q.includes("remind") || q.includes("reminder")){
+    return `
+      <div class="card">
+        <div class="swift-ai-response">
+          <div class="swift-ai-header">
+            <div class="swift-ai-icon">✨</div>
+            <b>Swift AI</b>
+          </div>
+          <p>📝 I've noted your reminder. You can say "What are my reminders?" to check them.</p>
+        </div>
+      </div>
+    `;
+  }
+  
+  if(q.includes("joke") || q.includes("funny")){
+    const jokes = [
+      "Why don't scientists trust atoms? Because they make up everything!",
+      "Why did the scarecrow win an award? Because he was outstanding in his field!",
+      "What do you call a fake noodle? An impasta!",
+      "Why did the coffee file a police report? It got mugged!",
+      "What's orange and sounds like a parrot? A carrot!"
+    ];
+    const joke = jokes[Math.floor(Math.random() * jokes.length)];
+    speakSwiftAIResponse(joke);
+    return `
+      <div class="card">
+        <div class="swift-ai-response">
+          <div class="swift-ai-header">
+            <div class="swift-ai-icon">✨</div>
+            <b>Swift AI</b>
+          </div>
+          <p>${joke}</p>
+          <div class="note">😂 Telling joke...</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  if(q.includes("calculate") || q.includes("math") || q.includes("+") || q.includes("-") || q.includes("*") || q.includes("/")){
+    try{
+      // Simple math calculation
+      const mathExpr = q.replace(/calculate|what is|how much is/gi, "").trim();
+      const result = eval(mathExpr.replace(/[^-()\d/*+.]/g, ''));
+      speakSwiftAIResponse(`The result is ${result}`);
+      return `
+        <div class="card">
+          <div class="swift-ai-response">
+            <div class="swift-ai-header">
+              <div class="swift-ai-icon">✨</div>
+              <b>Swift AI</b>
+            </div>
+            <p>🧮 ${mathExpr} = ${result}</p>
+          </div>
+        </div>
+      `;
+    }catch(e){
+      // Fall back to AI for complex queries
+    }
+  }
+  
+  // For other queries, use the AI
+  const response = await swiftAIQuery(query);
+  speakSwiftAIResponse(response);
+  return `
+    <div class="card">
+      <div class="swift-ai-response">
+        <div class="swift-ai-header">
+          <div class="swift-ai-icon">✨</div>
+          <b>Swift AI</b>
+        </div>
+        <p>${response}</p>
+        <div class="note">Speaking response...</div>
+      </div>
+    </div>
+  `;
+}
+
+function speakSwiftAIResponse(text){
+  if('speechSynthesis' in window){
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    speechSynthesis.speak(utterance);
+  }
+}
+
+function startSwiftAIVoice(){
+  if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const swiftRecognition = new SpeechRecognition();
+    swiftRecognition.continuous = false;
+    swiftRecognition.interimResults = false;
+    swiftRecognition.lang = 'en-US';
+    
+    swiftAiStatus.style.display = 'flex';
+    
+    swiftRecognition.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript;
+      input.value = transcript;
+      swiftAiStatus.style.display = 'none';
+      
+      results.innerHTML = `
+        <div class="card">
+          <div class="swift-ai-response">
+            <div class="swift-ai-header">
+              <div class="swift-ai-icon">✨</div>
+              <b>Processing your request...</b>
+            </div>
+            <div class="loading-spinner"></div>
+          </div>
+        </div>
+      `;
+      
+      const swiftAIResult = await handleSwiftAIQuery(transcript);
+      results.innerHTML = swiftAIResult;
+    };
+    
+    swiftRecognition.onerror = () => {
+      swiftAiStatus.style.display = 'none';
+    };
+    
+    swiftRecognition.onend = () => {
+      swiftAiStatus.style.display = 'none';
+    };
+    
+    swiftRecognition.start();
+  }else{
+    alert('Voice recognition not supported in your browser');
+  }
+}
+
+/*SEARCH HISTORY */
+let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
+
+function addToHistory(query){
+  if(!query.trim()) return;
+  
+  searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
+  searchHistory.unshift(query);
+  searchHistory = searchHistory.slice(0,10);
+  
+  localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+}
+
+function showHistory(){
+  if(searchHistory.length === 0 && uploadedFiles.length === 0) return '';
+  
+  let historyHTML = '';
+  
+  if(uploadedFiles.length > 0){
+    historyHTML += `
+      <div class="card">
+        <b>Recent Files</b>
+        ${uploadedFiles.slice(0, 3).map(file => `
+          <div class="file-item" onclick="openFile('${file.name}')">
+            <div class="file-name">📄 ${file.name}</div>
+            <div class="file-size">${formatFileSize(file.size)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  
+  if(searchHistory.length > 0){
+    const historyItems = searchHistory.map(item => `
+      <div class="history-item" onclick="input.value='${item.replace(/'/g, "\\'")}'; handle('${item.replace(/'/g, "\\'")}')">
+        ${item}
+      </div>
+    `).join('');
+    
+    historyHTML += `
+      <div class="card">
+        <b>Recent Searches</b>
+        ${historyItems}
+      </div>
+    `;
+  }
+  
+  return historyHTML;
+}
+
+function formatFileSize(bytes){
+  if(bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+/* ---------- FILE SERVICES ---------- */
+function openFileModal(){
+  fileModal.style.display = 'flex';
+  renderFileList();
+}
+
+function closeFileModal(){
+  fileModal.style.display = 'none';
+}
+
+function searchOnService(service){
+  const query = input.value.trim();
+  if(query){
+    switch(service){
+      case 'googleDrive':
+        inlineWebSearch("site:drive.google.com " + query);
+        break;
+      case 'dropbox':
+        inlineWebSearch("site:dropbox.com " + query);
+        break;
+      case 'onedrive':
+        inlineWebSearch("site:onedrive.live.com " + query);
+        break;
+      case 'icloud':
+        inlineWebSearch("site:icloud.com " + query);
+        break;
+    }
+  }else{
+    openService(service);
+  }
+  closeFileModal();
+}
+
+function openService(service){
+  const urls = {
+    wetransfer: 'https://wetransfer.com',
+    figma: 'https://figma.com',
+    github: 'https://github.com',
+    notion: 'https://notion.so',
+    googledrive: 'https://drive.google.com',
+    dropbox: 'https://dropbox.com',
+    onedrive: 'https://onedrive.live.com',
+    icloud: 'https://icloud.com'
+  };
+  window.open(urls[service] || `https://${service}.com`, '_blank');
+  closeFileModal();
+}
+
+/* ---------- FILE UPLOAD ---------- */
+uploadArea.addEventListener('click', () => fileInput.click());
+
+uploadArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+  uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files);
+  handleFiles(files);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  handleFiles(files);
+  fileInput.value = '';
+});
+
+function handleFiles(files){
+  files.forEach(file => {
+    const fileData = {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      lastModified: file.lastModified,
+      preview: URL.createObjectURL(file)
+    };
+    
+    uploadedFiles.unshift(fileData);
+    if(uploadedFiles.length > 10) uploadedFiles.pop();
+    
+    localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+  });
+  
+  renderFileList();
+  
+  results.innerHTML = `
+    <div class="card">
+      <b>📁 Files Uploaded</b>
+      <p>Successfully uploaded ${files.length} file(s). You can access them in File Services.</p>
+    </div>
+  `;
+}
+
+function renderFileList(){
+  fileList.innerHTML = uploadedFiles.length > 0 ? 
+    uploadedFiles.slice(0, 5).map(file => `
+      <div class="file-item">
+        <div class="file-name">📄 ${file.name}</div>
+        <div class="file-size">${formatFileSize(file.size)}</div>
+        <div class="file-actions">
+          <button class="file-action-btn" onclick="openFile('${file.name}')" title="Open">🔍</button>
+          <button class="file-action-btn" onclick="removeFile('${file.name}')" title="Remove">🗑️</button>
+        </div>
+      </div>
+    `).join('') : 
+    '<p class="note" style="text-align:center">No files uploaded yet</p>';
+}
+
+function openFile(filename){
+  const file = uploadedFiles.find(f => f.name === filename);
+  if(file && file.preview){
+    window.open(file.preview, '_blank');
+  }
+}
+
+function removeFile(filename){
+  uploadedFiles = uploadedFiles.filter(f => f.name !== filename);
+  localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+  renderFileList();
+}
+
+/* ---------- INLINE WEB SEARCH (NO NEW TAB) ---------- */
+async function inlineWebSearch(rawQuery){
+  results.innerHTML = `<div class="card"><b>Searching…</b><div class="loading-spinner"></div></div>`;
+  try {
+    const res = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(rawQuery)}&format=json&no_html=1&skip_disambig=1`);
+    const data = await res.json();
+    let html = `<div class="card"><b>Web results for “${rawQuery}”</b>`;
+    if (data.AbstractText) {
+      html += `<div class="swift-ai-response"><p>${data.AbstractText}</p>`;
+      if (data.AbstractURL) html += `<a href="${data.AbstractURL}" target="_blank" rel="noreferrer">Read more</a>`;
+      html += `</div>`;
+    }
+    if (data.RelatedTopics && data.RelatedTopics.length) {
+      html += `<ul style="margin:10px 0;padding-left:20px;">`;
+      data.RelatedTopics.slice(0, 5).forEach(r => {
+        if (r.Text) html += `<li>${r.Text}</li>`;
+      });
+      html += `</ul>`;
+    }
+    html += `</div>`;
+    results.innerHTML = html;
+  } catch (e) {
+    results.innerHTML = `<div class="card">Could not retrieve results.</div>`;
+  }
+}
+
+/* AUTO-PLAY MUSIC SERVICES  */
+/* 1.  YouTube (iframe autoplay) */
+async function autoPlayYouTube(query) {
+  const resp = await fetch(
+    `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q= ${encodeURIComponent(
+      query
+    )}&key=AIzaSyCKFVBOrnw-SlRVyT8bb3zfwex4dvHSf3w&maxResults=1`
+  );
+  const data = await resp.json();
+  if (!data.items || !data.items.length) return alert("No video found");
+  embedPlayer(`https://www.youtube.com/embed/ ${data.items[0].id.videoId}?autoplay=1`);
+}
+
+/* 2.  YouTube Music */
+function autoPlayYouTubeMusic(query) {
+  window.open(
+    `https://music.youtube.com/search?q= ${encodeURIComponent(query)}`,
+    "_blank"
+  );
+}
+
+/* 3.  Spotify  */
+function autoPlaySpotify(query) {
+  /*  →  plain link, no API  */
+  window.open(`https://open.spotify.com/search/ ${encodeURIComponent(query)}`, "_blank");
+}
+
+/* 4.  SoundCloud ( */
+async function autoPlaySoundCloud(query) {
+  
+  window.open(`https://soundcloud.com/search?q= ${encodeURIComponent(query)}`, "_blank");
+} 
+
+/* shared helper: inject iframe or message into the card */
+function embedPlayer(src, msg) {
+  const box = document.getElementById("embedBox");
+  if (!box) return;
+  if (msg) {
+    box.innerHTML = `<p class="note">${msg}</p>`;
+    return;
+  }
+  box.innerHTML = `<iframe
+      src="${src}"
+      width="100%"
+      height="300"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>`;
+}
+
+/* ---------- MISC OLD HELPERS ---------- */
+function parseMusicQuery(query){
+  const patterns = [
+    /play\s+"(.+?)"\s+by\s+(.+)/i,
+    /play\s+(.+?)\s+by\s+(.+)/i,
+    /play\s+(.+)\s+on\s+(.+)/i,
+    /play\s+(.+)/i
+  ];
+  
+  for(const pattern of patterns){
+    const match = query.match(pattern);
+    if(match){
+      if(pattern.toString().includes('by')){
+        return {
+          song: match[1].trim(),
+          artist: match[2].trim(),
+          fullQuery: `${match[1].trim()} ${match[2].trim()}`
+        };
+      }else{
+        return {
+          song: match[1].trim(),
+          artist: '',
+          fullQuery: match[1].trim()
+        };
+      }
+    }
+  }
+  
+  return {
+    song: query.replace(/^play\s+/i, '').trim(),
+    artist: '',
+    fullQuery: query.replace(/^play\s+/i, '').trim()
+  };
+}
+
+/* ---------- LOADING STATES ---------- */
+function showLoading(){
+  results.innerHTML = `
+    <div class="card">
+      <b>Searching...</b>
+      <div class="loading-spinner"></div>
+    </div>
+  `;
+}
+
+/* ---------- VOICE SEARCH ---------- */
+let isListening = false;
+let recognition = null;
+
+if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  
+  recognition.onstart = () => {
+    isListening = true;
+    voiceBtn.classList.add('listening');
+    voiceStatus.style.display = 'flex';
+  };
+  
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    input.value = transcript;
+    handle(transcript);
+  };
+  
+  recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+    if(event.error === 'not-allowed'){
+      alert('Microphone access denied. Please allow microphone access to use voice search.');
+    }
+  };
+  
+  recognition.onend = () => {
+    isListening = false;
+    voiceBtn.classList.remove('listening');
+    voiceStatus.style.display = 'none';
+  };
+  
+  voiceBtn.addEventListener('click', () => {
+    if(isListening){
+      recognition.stop();
+    }else{
+      try{
+        recognition.start();
+      }catch(error){
+        console.error('Speech recognition start error:', error);
+        alert('Voice search is not available. Please check your microphone permissions.');
+      }
+    }
+  });
+  
+  voiceBtn.title = 'Voice Search (Click to start/stop)';
+}else{
+  voiceBtn.style.display = 'none';
+}
+
+/* ---------- BUTTON HANDLERS ---------- */
+textSearchBtn.addEventListener('click', () => {
+  if(input.value.trim()){
+    handle(input.value);
+  }else{
+    input.focus();
+  }
+});
+
+swiftAiBtn.addEventListener('click', () => {
+  if(swiftAiMode){
+    deactivateSwiftAI();
+  }else{
+    activateSwiftAI();
+  }
+});
+
+fileSearchBtn.addEventListener('click', openFileModal);
+
+mainSearchBtn.addEventListener('click', () => {
+  if(input.value.trim()){
+    handle(input.value);
+  }else{
+    input.focus();
+  }
+});
+
+/* ---------- MAIN HANDLER ---------- */
+async function handle(query){
+  const q = query.trim();
+  if(!q) return;
+  
+  addToHistory(query);
+  
+  // Check if Swift AI mode is active or query contains wake word
+  if(swiftAiMode || q.toLowerCase().includes("hey swift") || q.toLowerCase().includes("okay swift")){
+    const swiftAIResult = await handleSwiftAIQuery(q);
+    results.innerHTML = swiftAIResult;
+    return;
+  }
+  
+  results.innerHTML = showHistory();
+  showLoading();
+  
+  const lowerQuery = q.toLowerCase();
+  
+  /* 🎵 MUSIC INTENT – UNIVERSAL AUTO-PLAY */
+  if(lowerQuery.startsWith("play ")){
+    const musicData = parseMusicQuery(q);
+    const songQuery = musicData.fullQuery;
+    
+    results.innerHTML = `
+      <div class="card">
+        <b>🎵 Play: ${songQuery}</b>
+        ${musicData.artist ? `<p class="note">Artist: ${musicData.artist}</p>` : ''}
+        <div class="music-options">
+          <button class="music-btn" onclick="autoPlayYouTube('${songQuery.replace(/'/g, "\\'")}')">YouTube</button>
+          <button class="music-btn" onclick="autoPlayYouTubeMusic('${songQuery.replace(/'/g, "\\'")}')">YouTube Music</button>
+          <button class="music-btn" onclick="autoPlaySpotify('${songQuery.replace(/'/g, "\\'")}')">Spotify</button>
+          <button class="music-btn" onclick="autoPlaySoundCloud('${songQuery.replace(/'/g, "\\'")}')">SoundCloud</button>
+        </div>
+        <p class="note" style="margin-top:10px;">Auto-playing on YouTube…</p>
+        <div id="embedBox" style="margin-top:10px;"></div>
+      </div>
+    `;
+    
+    /* pick your favourite service to start automatically */
+    setTimeout(() => autoPlayYouTube(songQuery), 600);
+    return;
+  }
+  
+  /* 📁 FILE SEARCH INTENT */
+  if(lowerQuery.startsWith("find ") || lowerQuery.startsWith("search ") || 
+     lowerQuery.includes("file") || lowerQuery.includes("document")){
+    
+    if(lowerQuery.includes("drive") || lowerQuery.includes("google")){
+      inlineWebSearch("site:drive.google.com " + q);
+      return;
+    }
+    
+    if(lowerQuery.includes("dropbox")){
+      inlineWebSearch("site:dropbox.com " + q);
+      return;
+    }
+    
+    // General file search - show file services
+    openFileModal();
+    return;
+  }
+  
+  /* DIRECT SERVICES (only these open new tab) */
+  if(lowerQuery.startsWith("open ")){
+    const site = q.replace("open ", "").replace(/\s+/g, "");
+    window.open(`https://${site}.com`, "_blank");
+    results.innerHTML = `<div class="card">Opening ${site}.com</div>`;
+    return;
+  }
+  if(lowerQuery.includes("gmail") || lowerQuery.includes("email")){
+    window.open("https://mail.google.com", "_blank");
+    results.innerHTML = `<div class="card">Opening Gmail</div>`;
+    return;
+  }
+  if(lowerQuery.includes("youtube") && !lowerQuery.includes("youtube music")){
+    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`, "_blank");
+    results.innerHTML = `<div class="card">Opening YouTube for: ${q}</div>`;
+    return;
+  }
+  if(lowerQuery.includes("spotify")){
+    window.open(`https://open.spotify.com/search/${encodeURIComponent(q)}`, "_blank");
+    results.innerHTML = `<div class="card">Opening Spotify for: ${q}</div>`;
+    return;
+  }
+  
+  /* DEFAULT: inline web search */
+  inlineWebSearch(q);
+}
+
+/* ---------- KEYBOARD SHORTCUTS ---------- */
+input.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    handle(input.value);
+  }
+  
+  if(e.key === "/"){
+    e.preventDefault();
+    input.focus();
+    input.select();
+  }
+  
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "l"){
+    e.preventDefault();
+    input.focus();
+    input.select();
+  }
+  
+  if(e.key === "Escape"){
+    if(isListening && recognition){
+      recognition.stop();
+    }
+    input.value = "";
+    input.blur();
+    if(swiftAiMode){
+      deactivateSwiftAI();
+    }
+  }
+  
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f"){
+    e.preventDefault();
+    openFileModal();
+  }
+  
+  if((e.ctrlKey || e.metaKey) && e.key === " "){
+    e.preventDefault();
+    activateSwiftAI();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === ' ' && isListening && recognition){
+    e.preventDefault();
+    recognition.stop();
+  }
+});
+
+/* ---------- INITIALIZE ---------- */
+updateClearKeyButton();
+renderFileList();
+results.innerHTML = showHistory();
+
+setTimeout(() => input.focus(), 100);
+
+if(searchHistory.length === 0 && !SWIFT_AI_KEY && uploadedFiles.length === 0){
+  setTimeout(() => {
+    results.innerHTML = `
+      <div class="card">
+        <div class="swift-ai-response">
+          <div class="swift-ai-header">
+            <div class="swift-ai-icon">✨</div>
+            <b>Welcome to Swift Search with Swift AI!</b>
+          </div>
+          <p>Four ways to interact:</p>
+          <ul style="margin:10px 0; padding-left:20px;">
+            <li><strong>🔍 Text Search</strong> - Type and press Enter</li>
+            <li><strong>✨ Swift AI</strong> - Your personal voice assistant</li>
+            <li><strong>🎤 Voice Search</strong> - Click microphone icon</li>
+            <li><strong>📁 File Search</strong> - Cloud storage & file upload</li>
+          </ul>
+          <p>Try saying "Hey Swift" or click the ✨ button to activate Swift AI.</p>
+          <div class="swift-ai-controls">
+            <button class="swift-ai-btn" onclick="activateSwiftAI()">
+              <span>✨</span> Activate Swift AI
+            </button>
+            <button class="swift-ai-btn secondary" onclick="openFileModal()">
+              <span>📁</span> Open File Services
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }, 500);
+}
+
+// Close modal when clicking outside
+fileModal.addEventListener('click', (e) => {
+  if(e.target === fileModal){
+    closeFileModal();
+  }
+});
+</script>
+
+</body>
+</html>
