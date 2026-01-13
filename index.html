@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Yakin Search – Doğu AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 
 <style>
-/* YAKIN-SEARCH UI */
+/* ---------- YAKIN-SEARCH UI ---------- */
 :root{
   --bg:#0b0e14;
   --card:#111827;
@@ -464,16 +467,17 @@ body{
 </div>
 
 <script>
-/* CONFIG */
-const SWIFT_AI_KEY = 'AIzaSyCBH60P8aGwfrtP-AEG8YKV7NeiNDfletQ'; 
-const SERPAPI_KEY  = '37287ea6afcdff52e5bdaf31322f9905a7cf3aa254221797e265b9be7d010b37';               
+
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY';   // <── paste here
+const GOOGLE_CX      = 'YOUR_SEARCH_ENGINE_ID'; // <── paste here
+const GEMINI_KEY     = 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE'; // optional
 
 let doguAiMode = false;
-let currentTab = 'web';
+let currentTab = 'web'; // web | images | videos | news | maps
 let currentPage = 1;
 let lastQuery = '';
 
-/* DOM  */
+
 const input = document.getElementById('q');
 const results = document.getElementById('results');
 const voiceBtn = document.querySelector('.voice-search');
@@ -487,54 +491,43 @@ const fileInput = document.getElementById('fileInput');
 const fileList = document.getElementById('fileList');
 const tabs = document.querySelectorAll('.tab');
 
-/*  YAKIN-SEARCH via SerpAPI (Google JSON, no CORS) */
+
 async function yakinSearch(rawQuery, type = 'web', page = 1) {
   lastQuery = rawQuery;
   currentTab = type;
   currentPage = page;
   results.innerHTML = '<div class="loading-spinner"></div>';
 
-  // Build SerpAPI URL (100 free searches / month)
-  const params = new URLSearchParams({
-    engine: 'google',
-    q: rawQuery,
-    location: 'United States',
-    hl: 'en',
-    gl: 'us',
-    safe: 'active',
-    num: 10,
-    start: (page - 1) * 10,
-    api_key: SERPAPI_KEY,
-    output: 'json'
-  });
+  const start = (page - 1) * 10 + 1;
+  const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(rawQuery)}&key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&start=${start}&num=10`;
 
   try {
-    const res = await fetch(`https://serpapi.com/search.json?${params}`);
+    const res = await fetch(url);
     const data = await res.json();
 
-    // Handle SerpAPI error
+    // Handle Google error
     if (data.error) {
-      results.innerHTML = `<div class="result-card">SerpAPI: ${data.error}</div>`;
+      results.innerHTML = `<div class="result-card">Google API: ${data.error.message}</div>`;
       return;
     }
 
-    const organic = data.organic_results || [];
+    const items = data.items || [];
     let html = '';
-    organic.forEach(r => {
+    items.forEach(r => {
       html += `
         <div class="result-card">
           <a class="result-title" href="${r.link}" target="_blank" rel="noreferrer">
             <img class="result-favicon" src="https://www.google.com/s2/favicons?domain=${new URL(r.link).hostname}">
             ${r.title}
           </a>
-          <div class="result-url">${r.displayed_link || r.link}</div>
+          <div class="result-url">${r.htmlTitle ? r.htmlTitle.replace(/<.*?>/g, '') : r.link}</div>
           <div class="result-snippet">${r.snippet || ''}</div>
         </div>`;
     });
 
     if (!html) html = '<div class="result-card">No results found.</div>';
 
-
+    // pagination
     html += `
       <div class="pagination">
         <button class="page-btn" onclick="yakinSearch('${rawQuery}','${type}',${page-1})" ${page===1?'disabled':''}>‹ Prev</button>
@@ -545,22 +538,22 @@ async function yakinSearch(rawQuery, type = 'web', page = 1) {
     results.innerHTML = html;
   } catch (e) {
     console.error(e);
-    inlineWebSearch(rawQuery); 
+    inlineWebSearch(rawQuery); // fallback
   }
 }
 
-/*  TAB SWITCH */
+
 tabs.forEach(t => t.addEventListener('click', () => {
   tabs.forEach(x => x.classList.remove('active'));
   t.classList.add('active');
   if (lastQuery) yakinSearch(lastQuery, t.dataset.type, 1);
 }));
 
-/*  DOĞU AI (same as before) */
+
 async function doguAIQuery(prompt){
-  if (!SWIFT_AI_KEY || SWIFT_AI_KEY === 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE') return 'Doğu AI offline (no key).';
+  if (!GEMINI_KEY || GEMINI_KEY === 'YOUR_GEMINI_2.5_FLASH_FREE_KEY_HERE') return 'Doğu AI offline (no key).';
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${SWIFT_AI_KEY}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: `You are Doğu AI, a helpful voice assistant. Reply conversationally to: "${prompt}". Keep it short.` }] }] })
@@ -640,7 +633,7 @@ async function handleDoğuAIQuery(query){
     </div>`;
 }
 
-/* VOICE SEARCH */
+
 let isListening = false;
 let recognition = null;
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -674,7 +667,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   document.querySelector('.voice-search').style.display = 'none';
 }
 
-/* FILE SERVICES (same as old file)*/
+
 function openFileModal(){
   fileModal.style.display = 'flex';
   renderFileList();
@@ -772,7 +765,6 @@ function formatFileSize(bytes){
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-/*  MUSIC (same as old file) */
 function parseMusicQuery(query){
   const patterns = [
     /play\s+"(.+?)"\s+by\s+(.+)/i,
@@ -817,19 +809,18 @@ function embedPlayer(src, msg) {
   box.innerHTML = `<iframe src="${src}" width="100%" height="300" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 }
 
-/*  MAIN HANDLER */
 async function handle(query){
   const q = query.trim();
   if (!q) return;
   addToHistory(q);
-  // Doğu-AI wake words
+
   if (doguAiMode || q.toLowerCase().includes('hey doğai') || q.toLowerCase().includes('okay doğai')) {
     results.innerHTML = '<div class="loading-spinner"></div>';
     const html = await handleDoğuAIQuery(q);
     results.innerHTML = html;
     return;
   }
-  // Music intents
+
   if (q.toLowerCase().startsWith('play ')) {
     const musicData = parseMusicQuery(q);
     results.innerHTML = `
@@ -848,7 +839,7 @@ async function handle(query){
     setTimeout(() => autoPlayYouTube(musicData.fullQuery), 600);
     return;
   }
-  // File intents
+
   const lower = q.toLowerCase();
   if (lower.startsWith('find ') || lower.startsWith('search ') || lower.includes('file') || lower.includes('document')) {
     if (lower.includes('drive') || lower.includes('google')) {
@@ -862,7 +853,6 @@ async function handle(query){
     openFileModal();
     return;
   }
-  // Explicit “open” commands – only these open new tab
   if (lower.startsWith('open ')) {
     const site = q.replace('open ', '').replace(/\s+/g, '');
     window.open(`https://${site}.com`, '_blank');
@@ -884,11 +874,10 @@ async function handle(query){
     results.innerHTML = `<div class="result-card">Opening Spotify for: ${q}</div>`;
     return;
   }
-
+  // Default: yakin search on active tab
   yakinSearch(q, currentTab, 1);
 }
 
-/*  HISTORY */
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles")) || [];
 function addToHistory(q){
@@ -925,7 +914,7 @@ function showHistory(){
   return html;
 }
 
-/* KEYBOARD SHORTCUTS */
+
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter') handle(input.value);
   if (e.key === '/') {
@@ -956,7 +945,7 @@ input.addEventListener('keydown', e => {
   }
 });
 
-/*  INITIALIZE */
+/* INITIALIZE */
 results.innerHTML = showHistory();
 input.focus();
 if (searchHistory.length === 0 && uploadedFiles.length === 0) {
@@ -974,4 +963,3 @@ if (searchHistory.length === 0 && uploadedFiles.length === 0) {
 </script>
 </body>
 </html>
-
